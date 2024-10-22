@@ -34,9 +34,15 @@ get("/payment/new") do
 end
 
 get '/payment/results' do
-  @the_num = params.fetch("users_number").to_f
+  @the_apr = params.fetch("user_apr").to_f
+  @the_yr = params.fetch("user_years").to_f
+  @the_pv = params.fetch("user_pv").to_f
 
-  @the_result = @the_num ** 0.5
+  @monthly = @the_apr/12
+  @payments = @the_yr*12
+  @resulty = @the_pv*12
+  @denomn = 1 - (1 + @monthly) ** -@payments
+  @the_result = @resulty/@denomn
 
   erb(:payment_results)
 end
